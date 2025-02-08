@@ -3,52 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Surprise</title>
+    <title>Valentine Surprise</title>
     <style>
-        body {
+        body, html {
             margin: 0;
+            padding: 0;
             overflow: hidden;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: black;
         }
-
         .slide {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            animation: slideIn 2s ease-in-out forwards;
+            width: 100vw;
+            height: 100vh;
+            animation: slideIn 1s ease-in-out forwards;
         }
-
+        .slide1 { background: red; animation-delay: 0s; }
+        .slide2 { background: blue; animation-delay: 0.5s; }
+        .slide3 { background: yellow; animation-delay: 1s; }
+        .slide4 { background: green; animation-delay: 1.5s; }
+        
         @keyframes slideIn {
             0% { transform: translateY(-100%); }
             100% { transform: translateY(0); }
         }
-
-        .slide:nth-child(1) { background: red; animation-delay: 0s; }
-        .slide:nth-child(2) { background: blue; animation-delay: 0.5s; }
-        .slide:nth-child(3) { background: yellow; animation-delay: 1s; }
-        .slide:nth-child(4) { background: green; animation-delay: 1.5s; }
-
+        
         #openBtn {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 40px;
+            padding: 15px 30px;
             font-size: 24px;
             background: white;
             border: none;
             cursor: pointer;
             z-index: 10;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+            animation-delay: 2s;
         }
 
-        #content {
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        #animationContainer {
             display: none;
-            position: absolute;
-            width: 100%;
-            height: 100%;
             background: pink;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -59,12 +67,12 @@
             font-weight: bold;
             color: white;
             opacity: 0;
-            animation: fadeIn 2s forwards;
+            animation: textAppear 2s ease-in-out forwards;
         }
 
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+        @keyframes textAppear {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         .heart {
@@ -72,51 +80,65 @@
             height: 100px;
             background: red;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            animation: heartBeat 2s forwards 2s;
+            transform: scale(0);
+            animation: heartGrow 2s ease-in-out forwards;
+            animation-delay: 3s;
         }
 
-        @keyframes heartBeat {
-            0% { transform: translate(-50%, -50%) scale(0); }
-            100% { transform: translate(-50%, -50%) scale(1.5); }
+        @keyframes heartGrow {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
         }
 
-        #letter {
-            display: none;
-            width: 300px;
+        .explosion {
+            font-size: 60px;
+            font-weight: bold;
+            color: pink;
+            text-shadow: 0 0 10px white;
+            opacity: 0;
+            position: absolute;
+            animation: explode 2s ease-in-out forwards;
+            animation-delay: 5s;
+        }
+
+        @keyframes explode {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .letter {
+            width: 60%;
             height: 200px;
             background: white;
+            text-align: center;
             padding: 20px;
-            border-radius: 10px;
             font-size: 20px;
             position: absolute;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+            bottom: -300px;
+            animation: letterSlide 3s ease-in-out forwards;
+            animation-delay: 7s;
+        }
+
+        @keyframes letterSlide {
+            0% { bottom: -300px; }
+            100% { bottom: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="slide"></div>
-    <div class="slide"></div>
-    <div class="slide"></div>
-    <div class="slide"></div>
+    <div class="slide slide1"></div>
+    <div class="slide slide2"></div>
+    <div class="slide slide3"></div>
+    <div class="slide slide4"></div>
 
     <button id="openBtn">Open</button>
 
-    <div id="content">
-        <div class="text" id="oggyText">O</div>
-        <div class="text" id="gText">G</div>
-        <div class="text" id="g2Text">G</div>
-        <div class="text" id="yText">Y</div>
-
-        <div class="heart" id="heart"></div>
-
-        <div id="letter">
+    <div id="animationContainer">
+        <div class="text" id="ayushi">Ayushi</div>
+        <div class="heart"></div>
+        <div class="explosion">Happy Valentine's Day my Loviee Cutie Oggy</div>
+        <div class="letter">
             Saath mein jyada time hua nahi hai, par kabhi mehsoos nahi hua. 
             Aisa laga hai jaise hum ek dusre ko kitne time se jaante hain. 
             Sabhi kamiya, khamiya dekhte hue bhi saath dena, yahan tak aana, 
@@ -126,31 +148,9 @@
 
     <script>
         document.getElementById('openBtn').addEventListener('click', function() {
-            document.body.innerHTML = '<div id="content" style="display: flex;"></div>';
-            setTimeout(() => {
-                document.getElementById('oggyText').style.opacity = '1';
-            }, 500);
-            setTimeout(() => {
-                document.getElementById('gText').style.opacity = '1';
-            }, 1000);
-            setTimeout(() => {
-                document.getElementById('g2Text').style.opacity = '1';
-            }, 1500);
-            setTimeout(() => {
-                document.getElementById('yText').style.opacity = '1';
-            }, 2000);
-            setTimeout(() => {
-                document.getElementById('heart').style.display = 'block';
-            }, 2500);
-            setTimeout(() => {
-                document.getElementById('heart').style.transform = 'scale(2)';
-            }, 3000);
-            setTimeout(() => {
-                document.getElementById('heart').style.transform = 'scale(0)';
-            }, 4000);
-            setTimeout(() => {
-                document.getElementById('letter').style.display = 'block';
-            }, 4500);
+            document.body.style.background = 'pink';
+            document.getElementById('animationContainer').style.display = 'flex';
+            this.style.display = 'none';
         });
     </script>
 
