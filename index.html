@@ -3,200 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Surprise</title>
+    <title>Funny Puzzle Game</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: black;
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: Arial, sans-serif;
+            flex-direction: column;
         }
-        
-        /* Sliding Panels */
-        .slide {
-            position: absolute;
-            width: 100vw;
-            height: 100vh;
-            animation: slideIn 1s ease-in-out forwards;
+        .puzzle-board {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .slide1 { background: red; animation-delay: 0s; transform: translateX(-100%); }
-        .slide2 { background: blue; animation-delay: 0.5s; transform: translateX(100%); }
-        .slide3 { background: yellow; animation-delay: 1s; transform: translateY(-100%); }
-        .slide4 { background: green; animation-delay: 1.5s; transform: translateY(100%); }
-
-        @keyframes slideIn {
-            0% { transform: translateX(0) translateY(0); }
-            100% { transform: translateX(0) translateY(0); }
-        }
-
-        /* Open Button */
-        #openBtn {
-            position: absolute;
-            padding: 15px 30px;
-            font-size: 24px;
-            background: white;
-            border: none;
-            cursor: pointer;
-            z-index: 10;
-            opacity: 0;
-            animation: fadeIn 2s ease-in-out forwards 2s;
-            box-shadow: 0px 0px 15px white;
-            transition: 0.3s;
-        }
-
-        #openBtn:hover {
-            box-shadow: 0px 0px 25px pink;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        /* Celebration Effects */
-        .firework, .flower {
-            position: absolute;
-            top: -100px;
-            width: 20px;
-            height: 20px;
-            background: gold;
-            border-radius: 50%;
-            animation: fall 5s linear infinite;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(100vh); opacity: 0; }
-        }
-
-        /* OGGY Name Animation */
-        #oggyText {
-            position: absolute;
-            font-size: 80px;
-            font-weight: bold;
-            color: white;
-            opacity: 0;
-            animation: typeEffect 3s ease-in-out forwards;
-            animation-delay: 1s;
-        }
-
-        @keyframes typeEffect {
-            0% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Heart Transformation */
-        .heart {
-            width: 100px;
-            height: 100px;
-            background: red;
-            position: absolute;
-            transform: scale(0);
-            animation: heartGrow 2s ease-in-out forwards;
-            animation-delay: 3s;
-        }
-
-        @keyframes heartGrow {
-            0% { transform: scale(0); }
-            100% { transform: scale(1.5); }
-        }
-
-        /* Heart Opening */
-        .heart::before, .heart::after {
-            content: "";
-            position: absolute;
-            width: 50px;
+        .piece {
+            width: 80px;
             height: 80px;
-            background: red;
-            border-radius: 50px 50px 0 0;
-            top: 0;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: lightblue;
+            border: 2px solid #333;
+            cursor: grab;
         }
-
-        .heart::before {
-            left: 50px;
-            transform: rotate(-45deg);
-        }
-
-        .heart::after {
-            left: 0;
-            transform: rotate(45deg);
-        }
-
-        /* Love Letter */
-        .letter {
-            width: 60%;
-            height: 200px;
+        .drop-zone {
+            width: 80px;
+            height: 80px;
             background: white;
-            text-align: center;
-            padding: 20px;
-            font-size: 20px;
-            position: absolute;
-            bottom: -300px;
-            animation: letterSlide 3s ease-in-out forwards;
-            animation-delay: 7s;
+            border: 2px dashed #333;
         }
-
-        @keyframes letterSlide {
-            0% { bottom: -300px; }
-            100% { bottom: 100px; }
+        #message {
+            font-size: 24px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-
-    <!-- Sliding Panels -->
-    <div class="slide slide1"></div>
-    <div class="slide slide2"></div>
-    <div class="slide slide3"></div>
-    <div class="slide slide4"></div>
-
-    <!-- Open Button -->
-    <button id="openBtn">Open</button>
-
-    <!-- Celebration Effects -->
-    <div id="celebration">
-        <div class="firework" style="left: 10%;"></div>
-        <div class="firework" style="left: 30%;"></div>
-        <div class="firework" style="left: 50%;"></div>
-        <div class="firework" style="left: 70%;"></div>
-        <div class="firework" style="left: 90%;"></div>
-    </div>
-
-    <!-- Animation Container -->
-    <div id="animationContainer">
-        <div id="oggyText">OGGY</div>
-        <div class="heart"></div>
-        <div class="letter">
-            'Saath mein jyada time hua nahi hai, par kabhi mehsoos nahi hua. 
-            Aisa laga hai jaise hum ek dusre ko kitne time se jaante hain. 
-            Sabhi kamiya, khamiya dekhte hue bhi saath dena, yahan tak aana, 
-            aur mere partner banne ke liye dil se shukriya.'
+    <div class="container">
+        <h1>Complete the Puzzle in 10 sec!</h1>
+        <p id="timer">Time Left: 10s</p>
+        <div class="puzzle-board">
+            <div id="zone1" class="drop-zone"></div>
+            <div id="zone2" class="drop-zone"></div>
+            <div id="zone3" class="drop-zone"></div>
         </div>
+        <div class="puzzle-board">
+            <div id="p1" class="piece" draggable="true">1</div>
+            <div id="p2" class="piece" draggable="true">2</div>
+            <div id="p3" class="piece" draggable="true">3</div>
+        </div>
+        <p id="message"></p>
     </div>
 
     <script>
-        document.getElementById('openBtn').addEventListener('click', function() {
-            document.body.style.background = 'pink';
-            document.getElementById('oggyText').style.opacity = "1";
-            document.querySelector('.heart').style.opacity = "1";
-            this.style.display = 'none';
-
-            // Celebration effect start
-            let num = 20;
-            for (let i = 0; i < num; i++) {
-                let firework = document.createElement('div');
-                firework.classList.add('firework');
-                firework.style.left = Math.random() * 100 + 'vw';
-                document.body.appendChild(firework);
+        let correctOrder = { zone1: "1", zone2: "2", zone3: "3" };
+        let userOrder = {};
+        let timeLeft = 10;
+        let timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById("timer").innerText = `Time Left: ${timeLeft}s`;
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                checkPuzzle();
             }
-        });
-    </script>
+        }, 1000);
 
+        document.querySelectorAll(".piece").forEach(piece => {
+            piece.addEventListener("dragstart", (e) => {
+                e.dataTransfer.setData("text", e.target.id);
+            });
+        });
+
+        document.querySelectorAll(".drop-zone").forEach(zone => {
+            zone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+            });
+
+            zone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                let pieceId = e.dataTransfer.getData("text");
+                let piece = document.getElementById(pieceId);
+                if (!zone.hasChildNodes()) {
+                    zone.appendChild(piece);
+                    userOrder[zone.id] = piece.innerText;
+                }
+            });
+        });
+
+        function checkPuzzle() {
+            let isCorrect = Object.keys(correctOrder).every(
+                key => correctOrder[key] === userOrder[key]
+            );
+            document.getElementById("message").innerText = isCorrect ? "Good Job!" : "Wrong!";
+        }
+    </script>
 </body>
-    </html>
-    
+</html>
